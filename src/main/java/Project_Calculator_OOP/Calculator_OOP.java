@@ -17,6 +17,7 @@ public class Calculator_OOP {
         calc.exec();
     }
 }
+
 //Интерфейс Operation выполняет действия над операциями
 interface Operation {
     double exec(double first_value, double second_value);
@@ -43,6 +44,12 @@ class Multiply implements Operation {
 
 class Division implements Operation {
     public double exec(double first_value, double second_value) {
+        /**
+         * Задание №7. Проверяем, если второе значение равно 0, то выбрасываем исключение
+         */
+        if (second_value == 0) {
+            throw new ArithmeticException("Деление на ноль запрещено!");
+        }
         return (first_value / second_value);
     }
 }
@@ -55,7 +62,8 @@ interface Operations {
 class CalculatorLogic implements Operations {
     char resOperation;
     public Operation operation;
-//метод выполняет арифметические операции над числами
+
+    //метод выполняет арифметические операции над числами
     public Operation getOper(char op) {
         this.resOperation = op;
         switch (resOperation) {
@@ -88,22 +96,34 @@ class Calculator {
     public Calculator(CalculatorLogic resultOperation) {
         this.resultOperation = resultOperation;
     }
-
     //Ввод и вывод операции
     public void exec() {
         //Поток ввода
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите первое число и нажмите Enter");
-        double num1 = scanner.nextDouble();
-        //Ввод операции
-        System.out.println("Выберите операцию: +, -, *, / и нажмите Enter");
-        //считываем введеную операцию
-        char operation = scanner.next().trim().charAt(0);
-        System.out.println("Введите второе число и нажмите Enter");
-        double num2 = scanner.nextDouble();
-        //Обработка операций над значениями
-        System.out.print("Ответ:\t");
-        Operation op = resultOperation.getOper(operation);
-        System.out.println(op.exec(num1, num2));
+        /**
+         * Для задания №7 Проверяем на ввод не корректных значений с помощью исключений try catch
+         */
+        try {
+            System.out.println("Введите первое число и нажмите Enter");
+            double num1 = scanner.nextDouble();
+            //Ввод операции
+            System.out.println("Выберите операцию: +, -, *, / и нажмите Enter");
+            //считываем введеную операцию
+            char operation = scanner.next().trim().charAt(0);
+            System.out.println("Введите второе число и нажмите Enter");
+            double num2 = scanner.nextDouble();
+            //Обработка операций над значениями
+            Operation op = resultOperation.getOper(operation);
+            //Если введеная операция не null, то выводим ответ, иначе ошибка
+            try {
+                if (op != null) System.out.println("Ответ: " + op.exec(num1, num2));
+                else System.out.println("Error: Не верная операция!");
+            } catch (ArithmeticException ex) {
+                System.out.println(ex.getMessage());
+            }
+            //System.out.print("Ответ:\t");
+        } catch (Exception e) {
+            System.out.println("Ошибка: Не верное значение!");
+        }
     }
 }
