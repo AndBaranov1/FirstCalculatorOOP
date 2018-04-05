@@ -11,20 +11,36 @@ public class Task_4 {
         int[] array = new int[20];
         Random random = new Random();
         System.out.println("Массив из 20 случайных чисел: ");
-        int max = 0;
-        int min = 0;
+        //Перебираем массив в цикле и выводим в консоль
         for (int i = 0; i < 20; i++) {
             array[i] = (random.nextInt(20) - 10);
             System.out.println(array[i]);
-            if (i == 0) {
-                min = array[0];
-                max = array[0];
-            } else {
-                if (max < array[i]) max = array[i];
-                if (min > array[i]) min = array[i];
+        }
+        int maxIndex = 0;
+        int max = -11;
+        //Перебираем массив в цикле, если элемент массива больше max и меньше 0, значит это макс. отриц. эл.
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] > max && array[i] < 0) {
+                max = array[i];
+                maxIndex = i;
             }
         }
+        int minIndex = 0;
+        int min = 11;
+        for (int j = 0; j < array.length; j++) {
+            if (array[j] < min && array[j] > 0) {
+                min = array[j];
+                minIndex = j;
+            }
+        }
+        //Поменяем элементы массива местами
+        array[maxIndex] = min;
+        array[minIndex] = max;
         System.out.println("Максимальный отрицательный элемент:" + max);
         System.out.println("Минимальный положительный элемент:" + min);
+        System.out.println("Меняем местами элементы массива:");
+        for (int i = 0; i < array.length; i++) {
+            System.out.println(array[i]);
+        }
     }
 }
